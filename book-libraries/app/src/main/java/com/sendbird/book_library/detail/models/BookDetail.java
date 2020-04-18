@@ -1,4 +1,4 @@
-package com.sendbird.book_library.model.detail;
+package com.sendbird.book_library.detail.models;
 
 import com.google.gson.annotations.SerializedName;
 

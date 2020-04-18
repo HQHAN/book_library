@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sendbird.book_library.R;
@@ -44,7 +46,7 @@ public class NewBookListAdapter extends RecyclerView.Adapter<NewBookListAdapter.
         return dataSet.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView book_thumb_view;
         private TextView title;
         private TextView subTitle;
@@ -60,6 +62,13 @@ public class NewBookListAdapter extends RecyclerView.Adapter<NewBookListAdapter.
             isbn = itemView.findViewById(R.id.isbn);
             price = itemView.findViewById(R.id.price);
             url = itemView.findViewById(R.id.book_url);
+
+            itemView.setOnClickListener(v -> {
+                NavDirections action = NewFragmentDirections.actionNavigationNewToBookDetailFragment(
+                        dataSet.get(getAdapterPosition()).isbn13
+                );
+                Navigation.findNavController(v).navigate(action);
+            });
         }
 
         public void bind(Book book) {
