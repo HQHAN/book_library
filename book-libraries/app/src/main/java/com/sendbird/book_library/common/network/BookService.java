@@ -1,6 +1,6 @@
 package com.sendbird.book_library.common.network;
 
-import com.sendbird.book_library.ui.home.models.BookList;
+import com.sendbird.book_library.model.home.BookList;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;

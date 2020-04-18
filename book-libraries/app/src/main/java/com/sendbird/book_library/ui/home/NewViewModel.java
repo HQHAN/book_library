@@ -5,34 +5,34 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.sendbird.book_library.common.network.NetworkManager;
+import com.sendbird.book_library.model.home.BookList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class NewViewModel extends ViewModel {
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private MutableLiveData<String> mText;
-
-    public NewViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+    public MutableLiveData<BookList> newBookList = new MutableLiveData<>();
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        compositeDisposable.clear();
     }
 
-    public LiveData<String> getText() {
-        testNetworkCall();
-        return mText;
-    }
+    public void fetchNewBookList() {
+        compositeDisposable.add(
+                NetworkManager.getInstance().bookServiceApi.getNewBookList()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSuccess(item -> {
+                        newBookList.setValue(item);
+                    })
+                    .doOnError(error -> {
 
-    private void testNetworkCall() {
-        NetworkManager.getInstance().bookServiceApi.getNewBookList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess(item -> {
-                    mText.setValue(item.books.get(0).title);
-                })
-                .doOnError(error -> {
-
-                })
-                .subscribe();
+                    })
+                    .subscribe()
+        );
     }
 }

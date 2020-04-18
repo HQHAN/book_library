@@ -1,4 +1,4 @@
-package com.sendbird.book_library.ui.home.models;
+package com.sendbird.book_library.model.home;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -15,7 +15,7 @@ public class BookList {
     public class Book {
         @SerializedName("title")
         public String title;
-        @SerializedName("subTitle")
+        @SerializedName("subtitle")
         public String subTitle;
         @SerializedName("isbn13")
         public Long isbn13;
