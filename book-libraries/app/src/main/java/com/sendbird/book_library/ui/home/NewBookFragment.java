@@ -7,30 +7,27 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
-import com.sendbird.book_library.databinding.FragmentNewBinding;
+import com.sendbird.book_library.SharedViewModel;
+import com.sendbird.book_library.common.ui.BookListFragment;
+import com.sendbird.book_library.ui.bookmark.BookmarkFragmentDirections;
 
-
-public class NewBookFragment extends Fragment {
+public class NewBookFragment extends BookListFragment {
 
     private NewBookViewModel newBookViewModel;
-    private FragmentNewBinding viewBinding;
-    private NewBookListAdapter newBookListAdapter;
+    private SharedViewModel sharedViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        View root = super.onCreateView(inflater, container, savedInstanceState);
         newBookViewModel = ViewModelProviders.of(this).get(NewBookViewModel.class);
-        viewBinding = FragmentNewBinding.inflate(inflater);
-
-        newBookListAdapter = new NewBookListAdapter();
-        viewBinding.newBookList.setAdapter(newBookListAdapter);
-        viewBinding.newBookList.setLayoutManager(new LinearLayoutManager(getContext()));
+        sharedViewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
 
         observeViewModel();
-        return viewBinding.getRoot();
+        return root;
     }
 
     @Override
@@ -41,17 +38,16 @@ public class NewBookFragment extends Fragment {
 
     private void observeViewModel() {
         newBookViewModel.newBookList.observe(getViewLifecycleOwner(), s -> {
-            newBookListAdapter.setData(s.books);
+            bookListAdapter.setData(s.books);
+            sharedViewModel.setNewBookList(s.books);
         });
 
-        newBookViewModel.isLoading.observe(getViewLifecycleOwner(), isLoading -> {
-            if(isLoading) {
-                viewBinding.progress.setVisibility(View.VISIBLE);
-                viewBinding.newBookList.setVisibility(View.GONE);
-            } else {
-                viewBinding.progress.setVisibility(View.GONE);
-                viewBinding.newBookList.setVisibility(View.VISIBLE);
-            }
-        });
+        newBookViewModel.isLoading.observe(getViewLifecycleOwner(), this::toggleLoading);
+    }
+
+    @Override
+    protected void navigateToDetail(Long isbn) {
+        NavDirections action = NewBookFragmentDirections.actionNavigationNewToBookDetailFragment(isbn);
+        Navigation.findNavController(getView()).navigate(action);
     }
 }

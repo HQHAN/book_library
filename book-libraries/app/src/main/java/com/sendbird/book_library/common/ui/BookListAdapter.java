@@ -1,4 +1,4 @@
-package com.sendbird.book_library.ui.home;
+package com.sendbird.book_library.common.ui;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,13 +7,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sendbird.book_library.R;
 import com.sendbird.book_library.databinding.BookRecyclerViewItemBinding;
-import com.sendbird.book_library.model.home.BookList;
 import com.sendbird.book_library.model.home.BookList.Book;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -21,8 +18,16 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewBookListAdapter extends RecyclerView.Adapter<NewBookListAdapter.ViewHolder>  {
+public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHolder>  {
+    public interface NavigateListener {
+        void navigateToDetail(Long isbn);
+    }
+    public BookListAdapter(NavigateListener listener) {
+        navigateListener = listener;
+    }
+
     private List<Book> dataSet = new ArrayList<>();
+    private NavigateListener navigateListener;
 
     public void setData(List<Book> books) {
         dataSet.clear();
@@ -66,10 +71,7 @@ public class NewBookListAdapter extends RecyclerView.Adapter<NewBookListAdapter.
             url = itemView.findViewById(R.id.book_url);
 
             itemView.setOnClickListener(v -> {
-                NavDirections action = NewBookFragmentDirections.actionNavigationNewToBookDetailFragment(
-                        dataSet.get(getAdapterPosition()).isbn13
-                );
-                Navigation.findNavController(v).navigate(action);
+                navigateListener.navigateToDetail(dataSet.get(getAdapterPosition()).isbn13);
             });
         }
 

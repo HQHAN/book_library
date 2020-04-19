@@ -4,32 +4,36 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
-import com.sendbird.book_library.R;
+import com.sendbird.book_library.SharedViewModel;
+import com.sendbird.book_library.common.ui.BookListFragment;
 
-public class BookmarkFragment extends Fragment {
-
-    private BookmarkViewModel bookmarkViewModel;
+public class BookmarkFragment extends BookListFragment {
+    private SharedViewModel sharedViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        bookmarkViewModel =
-                ViewModelProviders.of(this).get(BookmarkViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_bookmark, container, false);
-        final TextView textView = root.findViewById(R.id.text_notifications);
-        bookmarkViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        View root = super.onCreateView(inflater,container,savedInstanceState);
+        sharedViewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        bookListAdapter.setData(sharedViewModel.getBookMarkList());
+        toggleLoading(false);
+    }
+
+    @Override
+    protected void navigateToDetail(Long isbn) {
+        NavDirections action = BookmarkFragmentDirections.actionNavigationBookmarkToBookDetailFragment(isbn);
+        Navigation.findNavController(getView()).navigate(action);
     }
 }
