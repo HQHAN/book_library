@@ -4,28 +4,25 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.sendbird.book_library.R;
 import com.sendbird.book_library.databinding.FragmentNewBinding;
 
 
-public class NewFragment extends Fragment {
+public class NewBookFragment extends Fragment {
 
-    private NewViewModel newViewModel;
+    private NewBookViewModel newBookViewModel;
     private FragmentNewBinding viewBinding;
     private NewBookListAdapter newBookListAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        newViewModel = ViewModelProviders.of(this).get(NewViewModel.class);
+        newBookViewModel = ViewModelProviders.of(this).get(NewBookViewModel.class);
         viewBinding = FragmentNewBinding.inflate(inflater);
 
         newBookListAdapter = new NewBookListAdapter();
@@ -39,12 +36,22 @@ public class NewFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        newViewModel.fetchNewBookList();
+        newBookViewModel.fetchNewBookList();
     }
 
     private void observeViewModel() {
-        newViewModel.newBookList.observe(getViewLifecycleOwner(), s -> {
+        newBookViewModel.newBookList.observe(getViewLifecycleOwner(), s -> {
             newBookListAdapter.setData(s.books);
+        });
+
+        newBookViewModel.isLoading.observe(getViewLifecycleOwner(), isLoading -> {
+            if(isLoading) {
+                viewBinding.progress.setVisibility(View.VISIBLE);
+                viewBinding.newBookList.setVisibility(View.GONE);
+            } else {
+                viewBinding.progress.setVisibility(View.GONE);
+                viewBinding.newBookList.setVisibility(View.VISIBLE);
+            }
         });
     }
 }

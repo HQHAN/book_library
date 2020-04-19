@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sendbird.book_library.R;
 import com.sendbird.book_library.databinding.BookRecyclerViewItemBinding;
+import com.sendbird.book_library.model.home.BookList;
 import com.sendbird.book_library.model.home.BookList.Book;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -64,7 +66,7 @@ public class NewBookListAdapter extends RecyclerView.Adapter<NewBookListAdapter.
             url = itemView.findViewById(R.id.book_url);
 
             itemView.setOnClickListener(v -> {
-                NavDirections action = NewFragmentDirections.actionNavigationNewToBookDetailFragment(
+                NavDirections action = NewBookFragmentDirections.actionNavigationNewToBookDetailFragment(
                         dataSet.get(getAdapterPosition()).isbn13
                 );
                 Navigation.findNavController(v).navigate(action);
@@ -72,13 +74,25 @@ public class NewBookListAdapter extends RecyclerView.Adapter<NewBookListAdapter.
         }
 
         public void bind(Book book) {
+            Picasso.get().load(book.image).resize(640, 640).into(book_thumb_view, new Callback() {
+                @Override
+                public void onSuccess() {
+                    bindAllTexts(book);
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    bindAllTexts(book);
+                }
+            });
+        }
+
+        private void bindAllTexts(Book book) {
             title.setText(book.title);
             subTitle.setText(book.subTitle);
             isbn.setText(String.valueOf(book.isbn13));
             price.setText(book.price);
             url.setText(book.url);
-
-            Picasso.get().load(book.image).resize(640, 640).into(book_thumb_view);
         }
     }
 }

@@ -26,6 +26,8 @@ public class BookDetailFragment extends Fragment {
         dataBinding.setLifecycleOwner(this);
         dataBinding.setViewmodel(detailViewModel);
 
+        observeLiveData();
+
         return dataBinding.getRoot();
     }
 
@@ -34,5 +36,17 @@ public class BookDetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         long isbn = BookDetailFragmentArgs.fromBundle(getArguments()).getIsbn();
         detailViewModel.fetchBookDetail(isbn);
+    }
+
+    private void observeLiveData() {
+        detailViewModel.isLoading.observe(getViewLifecycleOwner(), isLoading -> {
+            if(isLoading) {
+                dataBinding.progressBar.setVisibility(View.VISIBLE);
+                dataBinding.bookDetailContainer.setVisibility(View.GONE);
+            } else {
+                dataBinding.progressBar.setVisibility(View.GONE);
+                dataBinding.bookDetailContainer.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }

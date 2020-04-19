@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_new"
-        android:name="com.sendbird.book_library.ui.home.NewFragment"
+        android:name="com.sendbird.book_library.ui.home.NewBookFragment"
         android:label="@string/title_new"
         tools:layout="@layout/fragment_new" >
         <action
