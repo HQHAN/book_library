@@ -23,5 +23,5 @@ public interface BookService {
     Single<BookList> searchBook(@Path("query") String query);
 
     @GET("search/{query}/{page}")
-    Single<ResponseBody> searchBookWithPage(@Path("query") String query, @Path("page") String page);
+    Single<BookList> searchBookWithPage(@Path("query") String query, @Path("page") int page);
 }

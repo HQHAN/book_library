@@ -27,6 +27,15 @@ public class BookList {
         public String image;
         @SerializedName("url")
         public String url;
+
+        public boolean isSameContents(Book another) {
+            return title.equals(another.title) &&
+                    subTitle.equals(another.subTitle) &&
+                    isbn13.equals(another.isbn13) &&
+                    price.equals(another.price) &&
+                    image.equals(another.image) &&
+                    url.equals(another.url);
+        }
     }
 }
 

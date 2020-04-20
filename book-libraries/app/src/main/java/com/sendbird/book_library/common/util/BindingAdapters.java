@@ -20,5 +20,4 @@ public class BindingAdapters {
     public static void loadImage(ImageView view, String url) {
         Picasso.get().load(url).into(view);
     }
-
 }

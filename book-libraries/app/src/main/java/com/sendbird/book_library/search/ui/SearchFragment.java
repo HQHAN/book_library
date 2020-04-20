@@ -19,6 +19,8 @@ import androidx.appcompat.widget.SearchView;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.sendbird.book_library.R;
 import com.sendbird.book_library.common.ui.BookListFragment;
@@ -27,6 +29,7 @@ public class SearchFragment extends BookListFragment {
 
     private SearchViewModel searchViewModel;
     private SimpleCursorAdapter cursorAdapter;
+    private SearchResultAdapter searchResultAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -34,7 +37,27 @@ public class SearchFragment extends BookListFragment {
         searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
         setHasOptionsMenu(true);
         observeViewModel();
+        initListeners();
+
+        searchResultAdapter = new SearchResultAdapter();
+        swapAdapter(searchResultAdapter);
+
         return root;
+    }
+
+    private void initListeners() {
+        viewBinding.newBookList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int totalItemCount = layoutManager.getItemCount();
+                int visibleItemCount = layoutManager.getChildCount();
+                int lastVisibleItemPos = layoutManager.findLastVisibleItemPosition();
+
+                searchViewModel.listScrolled(visibleItemCount, lastVisibleItemPos, totalItemCount);
+            }
+        });
     }
 
     @Override
@@ -63,7 +86,7 @@ public class SearchFragment extends BookListFragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchViewModel.searchBookWithQuery(query);
+                searchViewModel.searchBookInitially(query);
                 saveSearchQuery(query);
                 return true;
             }
@@ -92,7 +115,11 @@ public class SearchFragment extends BookListFragment {
 
     private void observeViewModel() {
         searchViewModel.searchList.observe(getViewLifecycleOwner(), s -> {
-            bookListAdapter.setData(s.books);
+            searchResultAdapter.submitList(s);
+        });
+
+        searchViewModel.isRequestInProgress.observe(getViewLifecycleOwner(), isRequestActive -> {
+            viewBinding.progress.setVisibility(isRequestActive ? View.VISIBLE : View.GONE);
         });
 
         searchViewModel.isLoading.observe(getViewLifecycleOwner(), this::toggleLoading);
