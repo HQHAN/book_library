@@ -5,8 +5,10 @@ import com.sendbird.book_library.home.model.BookList.Book;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,6 +17,8 @@ public class SharedViewModel extends BaseViewModel {
     public Set<Long> visitedBookIsbnSet = new HashSet<>();
 
     public List<Book> bookList = new ArrayList<>();
+
+    public Map<Long, String> bookMemoMap = new HashMap<>();
 
     public void setNewBookList(List<Book> list) {
         bookList.clear();
@@ -62,5 +66,13 @@ public class SharedViewModel extends BaseViewModel {
         return bookList.stream()
                 .filter(book -> isVisitedBook(book.isbn13))
                 .collect(Collectors.toList());
+    }
+
+    public void setMemo(Long isbn, String memo) {
+        bookMemoMap.put(isbn, memo);
+    }
+
+    public String getMemo(Long isbn) {
+        return bookMemoMap.get(isbn);
     }
 }

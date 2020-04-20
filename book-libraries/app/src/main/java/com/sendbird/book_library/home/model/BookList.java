@@ -28,6 +28,8 @@ public class BookList {
         @SerializedName("url")
         public String url;
 
+        public String memo = "";
+
         public boolean isSameContents(Book another) {
             return title.equals(another.title) &&
                     subTitle.equals(another.subTitle) &&

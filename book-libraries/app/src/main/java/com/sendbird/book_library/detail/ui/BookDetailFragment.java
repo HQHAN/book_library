@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -65,11 +66,22 @@ public class BookDetailFragment extends Fragment {
                 sharedViewModel.removeBookMarkItem(currentIsbn);
             }
         });
+
+        dataBinding.memoSaveButton.setOnClickListener(v -> {
+            if(dataBinding.memoEditField.getText().length() == 0) return;
+
+            sharedViewModel.setMemo(currentIsbn, dataBinding.memoEditField.getText().toString());
+            Toast.makeText(requireContext(), "Memo Saved !", Toast.LENGTH_LONG).show();
+
+        });
     }
 
     private void initUi() {
         dataBinding.bookMarkButton.setChecked(
                 sharedViewModel.isBookMarked(currentIsbn)
         );
+
+        String savedMemo = sharedViewModel.getMemo(currentIsbn);
+        dataBinding.memoEditField.setText(savedMemo);
     }
 }
