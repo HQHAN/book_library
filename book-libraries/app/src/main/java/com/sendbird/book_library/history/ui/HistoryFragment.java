@@ -10,9 +10,11 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
 
 import com.sendbird.book_library.common.SharedViewModel;
 import com.sendbird.book_library.common.ui.BookListFragment;
+import com.sendbird.book_library.common.ui.SwipeToDeleteCallback;
 
 public class HistoryFragment extends BookListFragment {
     private SharedViewModel sharedViewModel;
@@ -21,6 +23,10 @@ public class HistoryFragment extends BookListFragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater,container,savedInstanceState);
         sharedViewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
+        // add a swipe to delete feature
+        ItemTouchHelper itemTouchHelper = new
+                ItemTouchHelper(new SwipeToDeleteCallback(bookListAdapter, idToDelete -> sharedViewModel.removeVisitedBook(idToDelete)));
+        itemTouchHelper.attachToRecyclerView(viewBinding.newBookList);
         return root;
     }
 

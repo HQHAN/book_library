@@ -13,13 +13,14 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
 
 import com.sendbird.book_library.R;
 import com.sendbird.book_library.common.SharedViewModel;
 import com.sendbird.book_library.common.ui.BookListFragment;
+import com.sendbird.book_library.common.ui.SwipeToDeleteCallback;
 import com.sendbird.book_library.home.model.BookList.Book;
 
-import java.util.Comparator;
 import java.util.List;
 
 public class BookmarkFragment extends BookListFragment {
@@ -29,6 +30,10 @@ public class BookmarkFragment extends BookListFragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater,container,savedInstanceState);
         sharedViewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
+        // add a swipe to delete feature
+        ItemTouchHelper itemTouchHelper = new
+                ItemTouchHelper(new SwipeToDeleteCallback(bookListAdapter, idToDelete -> sharedViewModel.removeBookMarkItem(idToDelete)));
+        itemTouchHelper.attachToRecyclerView(viewBinding.newBookList);
         setHasOptionsMenu(true);
         return root;
     }

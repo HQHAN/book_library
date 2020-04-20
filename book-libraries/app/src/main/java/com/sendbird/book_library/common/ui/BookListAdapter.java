@@ -29,6 +29,13 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListViewHolder>  {
         notifyDataSetChanged();
     }
 
+    public Book deleteItem(int position) {
+        Book deleted = dataSet.remove(position);
+        notifyItemRemoved(position);
+        return deleted;
+    }
+
+
     @NonNull
     @Override
     public BookListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

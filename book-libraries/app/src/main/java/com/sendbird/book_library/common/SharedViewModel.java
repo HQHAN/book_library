@@ -41,6 +41,10 @@ public class SharedViewModel extends BaseViewModel {
         visitedBookIsbnSet.add(isbn);
     }
 
+    public void removeVisitedBook(Long isbn) {
+        visitedBookIsbnSet.remove(isbn);
+    }
+
     public List<Book> getBookMarkList() {
         return bookList.stream()
                 .filter(book -> isBookMarked(book.isbn13))
