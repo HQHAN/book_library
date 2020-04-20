@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,7 @@ public class BookListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         viewBinding = FragmentNewBinding.inflate(inflater);
+        viewBinding.newBookList.addItemDecoration(new DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL));
         bookListAdapter = new BookListAdapter(this::navigateToDetail);
         viewBinding.newBookList.setAdapter(bookListAdapter);
         viewBinding.newBookList.setLayoutManager(new LinearLayoutManager(getContext()));
