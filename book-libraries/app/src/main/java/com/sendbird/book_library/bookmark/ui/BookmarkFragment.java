@@ -2,6 +2,9 @@ package com.sendbird.book_library.bookmark.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,8 +14,13 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
+import com.sendbird.book_library.R;
 import com.sendbird.book_library.common.SharedViewModel;
 import com.sendbird.book_library.common.ui.BookListFragment;
+import com.sendbird.book_library.home.model.BookList.Book;
+
+import java.util.Comparator;
+import java.util.List;
 
 public class BookmarkFragment extends BookListFragment {
     private SharedViewModel sharedViewModel;
@@ -21,7 +29,28 @@ public class BookmarkFragment extends BookListFragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater,container,savedInstanceState);
         sharedViewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
+        setHasOptionsMenu(true);
         return root;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.book_list_sort_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.sort_price:
+                List<Book> sorted = sharedViewModel.getBookMarkList((o1, o2) ->
+                        Float.compare(Float.parseFloat(o2.price.replace("$", "")), Float.parseFloat(o1.price.replace("$", ""))));
+                bookListAdapter.setData(sorted);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
     @Override

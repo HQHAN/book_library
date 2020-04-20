@@ -4,6 +4,7 @@ import com.sendbird.book_library.common.network.BaseViewModel;
 import com.sendbird.book_library.home.model.BookList.Book;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,6 +44,13 @@ public class SharedViewModel extends BaseViewModel {
     public List<Book> getBookMarkList() {
         return bookList.stream()
                 .filter(book -> isBookMarked(book.isbn13))
+                .collect(Collectors.toList());
+    }
+
+    public List<Book> getBookMarkList(Comparator<Book> comparator) {
+        return bookList.stream()
+                .filter(book -> isBookMarked(book.isbn13))
+                .sorted(comparator)
                 .collect(Collectors.toList());
     }
 
