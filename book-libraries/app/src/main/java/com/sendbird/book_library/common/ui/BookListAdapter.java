@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sendbird.book_library.R;
 import com.sendbird.book_library.databinding.BookRecyclerViewItemBinding;
-import com.sendbird.book_library.model.home.BookList.Book;
+import com.sendbird.book_library.home.model.BookList.Book;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 

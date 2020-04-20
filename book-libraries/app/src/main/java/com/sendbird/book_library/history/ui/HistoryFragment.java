@@ -1,4 +1,4 @@
-package com.sendbird.book_library.ui.bookmark;
+package com.sendbird.book_library.history.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,10 +11,10 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
-import com.sendbird.book_library.SharedViewModel;
+import com.sendbird.book_library.common.SharedViewModel;
 import com.sendbird.book_library.common.ui.BookListFragment;
 
-public class BookmarkFragment extends BookListFragment {
+public class HistoryFragment extends BookListFragment {
     private SharedViewModel sharedViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -27,13 +27,13 @@ public class BookmarkFragment extends BookListFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        bookListAdapter.setData(sharedViewModel.getBookMarkList());
+        bookListAdapter.setData(sharedViewModel.getVisitedHistoryList());
         toggleLoading(false);
     }
 
     @Override
     protected void navigateToDetail(Long isbn) {
-        NavDirections action = BookmarkFragmentDirections.actionNavigationBookmarkToBookDetailFragment(isbn);
+        NavDirections action = HistoryFragmentDirections.actionNavigationHistoryToBookDetailFragment(isbn);
         Navigation.findNavController(getView()).navigate(action);
     }
 }

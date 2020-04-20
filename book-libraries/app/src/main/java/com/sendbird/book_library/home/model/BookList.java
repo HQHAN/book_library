@@ -1,4 +1,4 @@
-package com.sendbird.book_library.model.home;
+package com.sendbird.book_library.home.model;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -11,6 +11,8 @@ public class BookList {
     public int total;
     @SerializedName("books")
     public List<Book> books;
+    @SerializedName("page")
+    public int page;
 
     public class Book {
         @SerializedName("title")

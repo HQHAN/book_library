@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.sendbird.book_library.R;
-import com.sendbird.book_library.SharedViewModel;
+import com.sendbird.book_library.common.SharedViewModel;
 import com.sendbird.book_library.databinding.FragmentBookDetailBinding;
 
 public class BookDetailFragment extends Fragment {

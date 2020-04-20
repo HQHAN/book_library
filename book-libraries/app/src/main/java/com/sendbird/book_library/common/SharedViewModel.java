@@ -1,9 +1,7 @@
-package com.sendbird.book_library;
-
-import androidx.lifecycle.MutableLiveData;
+package com.sendbird.book_library.common;
 
 import com.sendbird.book_library.common.network.BaseViewModel;
-import com.sendbird.book_library.model.home.BookList.Book;
+import com.sendbird.book_library.home.model.BookList.Book;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package com.sendbird.book_library.ui.home;
+package com.sendbird.book_library.home.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,9 +11,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
-import com.sendbird.book_library.SharedViewModel;
+import com.sendbird.book_library.common.SharedViewModel;
 import com.sendbird.book_library.common.ui.BookListFragment;
-import com.sendbird.book_library.ui.bookmark.BookmarkFragmentDirections;
 
 public class NewBookFragment extends BookListFragment {
 

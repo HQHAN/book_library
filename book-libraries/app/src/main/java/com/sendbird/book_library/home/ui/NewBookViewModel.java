@@ -1,11 +1,10 @@
-package com.sendbird.book_library.ui.home;
+package com.sendbird.book_library.home.ui;
 
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.sendbird.book_library.common.network.BaseViewModel;
 import com.sendbird.book_library.common.network.NetworkManager;
-import com.sendbird.book_library.model.home.BookList;
+import com.sendbird.book_library.home.model.BookList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

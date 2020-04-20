@@ -8,11 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.sendbird.book_library.R;
 import com.sendbird.book_library.databinding.FragmentNewBinding;
 
 public class BookListFragment extends Fragment {
@@ -22,8 +19,6 @@ public class BookListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         viewBinding = FragmentNewBinding.inflate(inflater);
-
-
         return viewBinding.getRoot();
     }
 

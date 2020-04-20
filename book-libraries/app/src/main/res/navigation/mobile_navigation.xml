@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_new"
-        android:name="com.sendbird.book_library.ui.home.NewBookFragment"
+        android:name="com.sendbird.book_library.home.ui.NewBookFragment"
         android:label="@string/title_new"
         tools:layout="@layout/fragment_new" >
         <action
@@ -18,13 +18,13 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.sendbird.book_library.ui.search.SearchFragment"
+        android:name="com.sendbird.book_library.search.ui.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/navigation_bookmark"
-        android:name="com.sendbird.book_library.ui.bookmark.BookmarkFragment"
+        android:name="com.sendbird.book_library.bookmark.ui.BookmarkFragment"
         android:label="@string/title_bookmark"
         tools:layout="@layout/fragment_bookmark" >
         <action
@@ -35,7 +35,7 @@
 
     <fragment
         android:id="@+id/navigation_history"
-        android:name="com.sendbird.book_library.ui.history.HistoryFragment"
+        android:name="com.sendbird.book_library.history.ui.HistoryFragment"
         android:label="@string/title_history"
         tools:layout="@layout/fragment_history" >
         <action

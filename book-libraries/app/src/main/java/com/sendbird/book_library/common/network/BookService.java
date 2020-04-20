@@ -1,9 +1,8 @@
 package com.sendbird.book_library.common.network;
 
 import com.sendbird.book_library.detail.models.BookDetail;
-import com.sendbird.book_library.model.home.BookList;
+import com.sendbird.book_library.home.model.BookList;
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
 
 import okhttp3.ResponseBody;
@@ -21,8 +20,8 @@ public interface BookService {
     Single<BookDetail> getBookDetail(@Path("isbn") long isbn);
 
     @GET("search/{query}")
-    Observable<ResponseBody> searchBook(@Path("query") String query);
+    Single<BookList> searchBook(@Path("query") String query);
 
     @GET("search/{query}/{page}")
-    Observable<ResponseBody> searchBookWithPage(@Path("query") String query, @Path("page") String page);
+    Single<ResponseBody> searchBookWithPage(@Path("query") String query, @Path("page") String page);
 }
