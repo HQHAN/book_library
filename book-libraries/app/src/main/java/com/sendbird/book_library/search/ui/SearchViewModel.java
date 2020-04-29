@@ -16,14 +16,16 @@ public class SearchViewModel extends BaseViewModel {
     public MutableLiveData<List<Book>> searchList = new MutableLiveData<>();
     public MutableLiveData<Boolean> isRequestInProgress = new MutableLiveData<>(false);
     private static final int PAGE_SIZE = 10;
-    private static final int LOAD_MORE_THRESHOLD = 4;
+    private static final int LOAD_MORE_THRESHOLD = 8;
 
     private int lastRequestedPage = 1;
     private String lastQuery = "";
+    private int total;
 
     public void searchBookInitially(String query) {
         lastRequestedPage = 1;
         lastQuery = query;
+        total = 0;
         requestAndSaveData(query);
 
         List<Book> cachedResult = SearchResultMemoryCache.getInstance().getCachedResult(query);
@@ -36,14 +38,15 @@ public class SearchViewModel extends BaseViewModel {
         requestAndSaveData(query);
     }
 
-    public void listScrolled(int visibleItemCount, int lastVisibleItemPosition, int totalItemCount) {
-        if (visibleItemCount + lastVisibleItemPosition + LOAD_MORE_THRESHOLD >= totalItemCount) {
+    public void listScrolled(int visibleItemCount, int lastVisibleItemPosition) {
+        if (visibleItemCount + lastVisibleItemPosition + LOAD_MORE_THRESHOLD >= (lastRequestedPage -1) * PAGE_SIZE ) {
             requestMore(lastQuery);
         }
     }
 
     private void requestAndSaveData(String query) {
-        if (isRequestInProgress.getValue() || query.isEmpty()) return;
+        boolean isEndReached = total > 0 && lastRequestedPage * PAGE_SIZE - total >= PAGE_SIZE;
+        if (isRequestInProgress.getValue() || query.isEmpty() || isEndReached) return;
         isRequestInProgress.setValue(true);
 
         compositeDisposable.add(
@@ -63,6 +66,7 @@ public class SearchViewModel extends BaseViewModel {
                                     );
                             searchList.setValue(searchResult);
 
+                            total = item.total;
                             lastRequestedPage++;
                             isRequestInProgress.setValue(false);
                         })

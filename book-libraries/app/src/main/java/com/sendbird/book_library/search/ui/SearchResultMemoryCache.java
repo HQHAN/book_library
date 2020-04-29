@@ -1,5 +1,7 @@
 package com.sendbird.book_library.search.ui;
 
+import android.util.Log;
+
 import com.sendbird.book_library.home.model.BookList.Book;
 
 import java.util.HashMap;
@@ -31,10 +33,11 @@ public class SearchResultMemoryCache {
             if(start >= cachedBookList.size()) {
                 cachedBookList.addAll(bookList);
             } else {
-                end = Math.min(cachedBookList.size() - 1 , end);
+                end = Math.min(cachedBookList.size() , end + 1);
                 List<Book> window = cachedBookList.subList(start, end);
                 window.clear();
                 window.addAll(bookList);
+                Log.d("HANS", "page replace with server data ! Start : " + start + " End : " + end);
             }
         }
         return cachedBookList;

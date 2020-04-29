@@ -51,11 +51,10 @@ public class SearchFragment extends BookListFragment {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int totalItemCount = layoutManager.getItemCount();
                 int visibleItemCount = layoutManager.getChildCount();
                 int lastVisibleItemPos = layoutManager.findLastVisibleItemPosition();
 
-                searchViewModel.listScrolled(visibleItemCount, lastVisibleItemPos, totalItemCount);
+                searchViewModel.listScrolled(visibleItemCount, lastVisibleItemPos);
             }
         });
     }
@@ -145,7 +144,7 @@ public class SearchFragment extends BookListFragment {
 
     private String getSuggestionText(int position) {
         Cursor cursor = cursorAdapter.getCursor();
-        if (cursor != null && position >= 0 && position < cursor.getCount()) {
+        if (cursor != null && !cursor.isClosed() && position >= 0 && position < cursor.getCount()) {
             cursor.moveToPosition(position);
             return cursor.getString(cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1));
         }
