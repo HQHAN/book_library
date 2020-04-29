@@ -71,6 +71,7 @@ public class SearchFragment extends BookListFragment {
         searchView.setIconifiedByDefault(false);
         AutoCompleteTextView searchAutoCompleteTextView = searchView.findViewById(R.id.search_src_text);
         searchAutoCompleteTextView.setThreshold(1);
+
         String[] from = {SearchManager.SUGGEST_COLUMN_TEXT_1};
         int[] to = {R.id.item_label};
         cursorAdapter = new SimpleCursorAdapter(
